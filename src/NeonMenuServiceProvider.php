@@ -2,10 +2,10 @@
 
 namespace Neon;
 
-use \Illuminate\Support\Str;
-use \Illuminate\Support\ServiceProvider;
-use \Illuminate\Support\Facades\Storage;
-use \Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Str;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Http\Kernel;
 use Neon\View\Components\Menu;
 
 class NeonMenuServiceProvider extends ServiceProvider
@@ -22,6 +22,8 @@ class NeonMenuServiceProvider extends ServiceProvider
     $this->loadViewComponentsAs('neon', [
       Menu::class,
     ]);
+
+    // dd($this);
 
     $this->loadViewsFrom(__DIR__ . '/../resources/views/components', 'neon');
   }
