@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\View;
 class MenuService
 {
 
-    private $menu;
+    private $menus;
 
     /** Get all menus to don't query the database whenever you ask for a menu item. Later we can cache this.
      * 
      */
     public function __construct()
     {
+        $this->menus = App\Models\Menu::all();
     }
 
     /** Get a menu item by slug.
