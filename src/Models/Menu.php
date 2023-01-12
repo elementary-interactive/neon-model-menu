@@ -5,11 +5,13 @@ namespace Neon\Models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neon\Models\Traits\Uuid;
+use Neon\Site\Models\Traits\SiteDependencies;
 
 class Menu extends EloquentModel
 {
     use SoftDeletes;
     use Uuid;
+    use SiteDependencies;
 
     /** The attributes that should be handled as date or datetime.
      *
