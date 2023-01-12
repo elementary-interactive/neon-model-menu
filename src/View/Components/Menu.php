@@ -1,12 +1,20 @@
 <?php
  
 namespace Neon\View\Components;
- 
+
 use Illuminate\View\Component;
 use Neon\Services\MenuService;
  
 class Menu extends Component
 {
+
+    /**
+     * The Menu Service to handle Menu placeholders
+     * 
+     * @var MenuService
+     */
+    private $service;
+
     /**
      * The alert type.
      *
@@ -24,14 +32,15 @@ class Menu extends Component
     /**
      * Create the component instance.
      *
-     * @param  string  $type
-     * @param  string  $message
+     * @param  \Neon\Services\MenuService $service
+     * @param  string  $id
+     * 
      * @return void
      */
-    public function __construct(MenuService $menuService, $type, $message)
+    public function __construct(MenuService $service, $id)
     {
-        $this->type = $type;
-        $this->message = $message;
+        $this->service = $service;
+        // $this->slug = $slug;
     }
  
     /**
