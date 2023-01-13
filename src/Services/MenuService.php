@@ -9,51 +9,47 @@ use Illuminate\Support\Facades\View;
 class MenuService
 {
 
-    private $menus;
+  private $menus;
 
-    /** Get all menus to don't query the database whenever you ask for a menu item. Later we can cache this.
-     * 
+  /** Get all menus to don't query the database whenever you ask for a menu item. Later we can cache this.
+   * 
+   */
+  public function __construct()
+  {
+    $this->menus = App\Models\Menu::all();
+  }
+
+  /** Get a menu item by slug.
+   * 
+   * @param string $slug
+   * 
+   * @return \Brightly\Mango\Menu 
+   */
+  public function menu(string $slug): ?\Neon\Models\Menu
+  {
+    $result = $this->menus->where('slug', $slug);
+    dd($result);
+  }
+  public function templates(string $slug, string $path = null): array
+  {
+    /** Replace to custom path if given.
      */
-    public function __construct()
-    {
-        $this->menus = App\Models\Menu::all();
-    }
+    if (!is_null($path)) {
+      return [$path];
+    } else {
+      /** The given locale.
+       * @var string
+       */
+      $locale = \App::getLocale();
 
-    /** Get a menu item by slug.
-     * 
-     * @param string $slug
-     * 
-     * @return \Brightly\Mango\Menu 
-     */
-    public function menu(string $slug): ?\Neon\Models\Menu
-    {
-        dd('hello');
-    }
-
-    public function templates(string $slug, string $path = null): array
-    {
-        /** Replace to custom path if given.
+      return [
+        /** Domain related component not yet supported!
          */
-        if (!is_null($path))
-        {
-            return [$path];
-        }
-        else
-        {
-            /** The given locale.
-             * @var string
-             */
-            $locale = \App::getLocale();
-
-            return [
-                /** Domain related component not yet supported!
-                 */
-                "web.layouts.components.navigation_{$slug}",
-                "components.navigation_{$slug}",
-                "web.layouts.components.navigation",
-                "components.navigation",
-            ];
-
-        }
+        "web.layouts.components.navigation_{$slug}",
+        "components.navigation_{$slug}",
+        "web.layouts.components.navigation",
+        "components.navigation",
+      ];
     }
+  }
 }
