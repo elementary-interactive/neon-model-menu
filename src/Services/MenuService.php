@@ -11,12 +11,19 @@ class MenuService
 
   private $menus;
 
+  /** The class which will handle the menu instances
+   * 
+   * @var string
+   */
+  private $class;
+
   /** Get all menus to don't query the database whenever you ask for a menu item. Later we can cache this.
    * 
    */
   public function __construct()
   {
-    $this->menus = Menu::all();
+    $this->class = config('neon.menu.class', \Neon\Models\Menu::class);
+    $this->menus = $this->class::all();
   }
 
   /** Get a menu item by slug.
