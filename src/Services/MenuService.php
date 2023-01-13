@@ -16,7 +16,7 @@ class MenuService
    */
   public function __construct()
   {
-    $this->menus = App\Models\Menu::all();
+    $this->menus = Menu::all();
   }
 
   /** Get a menu item by slug.
@@ -30,6 +30,7 @@ class MenuService
     $result = $this->menus->where('slug', $slug);
     dd($result);
   }
+  
   public function templates(string $slug, string $path = null): array
   {
     /** Replace to custom path if given.
