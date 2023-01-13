@@ -44,7 +44,7 @@ class Menu extends Component
    */
   public function render()
   {
-    $x = $this->menu->menu($this->id);
+    $x = $this->service->findMenu($this->id);
     dd($x);
     return view('components.alert');
   }

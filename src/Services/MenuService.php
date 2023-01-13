@@ -25,12 +25,12 @@ class MenuService
    * 
    * @return \Brightly\Mango\Menu 
    */
-  public function menu(string $slug): ?\Neon\Models\Menu
+  public function findMenu(string $slug): ?\Neon\Models\Menu
   {
     $result = $this->menus->where('slug', $slug);
     dd($result);
   }
-  
+
   public function templates(string $slug, string $path = null): array
   {
     /** Replace to custom path if given.
