@@ -27,8 +27,9 @@ class MenuService
    */
   public function findMenu(string $slug): ?\Neon\Models\Menu
   {
-    $result = $this->menus->where('slug', $slug);
-    dd($result);
+    return $this->menus
+            ->where('slug', $slug)
+            ->first();
   }
 
   public function templates(string $slug, string $path = null): array
