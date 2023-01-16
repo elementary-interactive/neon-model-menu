@@ -41,7 +41,7 @@ class Menu extends EloquentModel
 
   public function links()
   {
-    return $this->hasMany(\Neon\Models\Models\Link::class)
+    return $this->hasMany(\Neon\Models\Link::class)
         ->whereNull('parent_id');
   }
 }
