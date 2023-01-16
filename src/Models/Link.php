@@ -57,7 +57,7 @@ class Link extends EloquentModel // implements Sortable
      * @var array
      */
     protected $attributes = [
-        'status'    => self::STATUS_DEFAULT,
+        // 'status'    => self::STATUS_DEFAULT,
         'method'    => self::METHOD_GET,
         'target'    => self::TARGET_SELF,
     ];
