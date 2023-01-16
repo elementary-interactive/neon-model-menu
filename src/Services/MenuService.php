@@ -23,7 +23,7 @@ class MenuService
   public function __construct()
   {
     $this->class = config('neon.menu.class', \Neon\Models\Menu::class);
-    $this->menus = $this->class::all();
+    $this->menus = $this->class::with('links')->get();
   }
 
   /** Get a menu item by slug.
@@ -35,30 +35,18 @@ class MenuService
   public function findMenu(string $slug): ?\Neon\Models\Menu
   {
     return $this->menus
-            ->where('slug', $slug)
-            ->first();
+      ->where('slug', $slug)
+      ->first();
   }
 
-  public function templates(string $slug, string $path = null): array
+  public function getViews(string $slug = ''): array
   {
-    /** Replace to custom path if given.
-     */
-    if (!is_null($path)) {
-      return [$path];
-    } else {
-      /** The given locale.
-       * @var string
-       */
-      $locale = \App::getLocale();
-
-      return [
-        /** Domain related component not yet supported!
-         */
-        "web.layouts.components.navigation_{$slug}",
-        "components.navigation_{$slug}",
-        "web.layouts.components.navigation",
-        "components.navigation",
-      ];
-    }
+    return [
+      \Site::current()->slug . '.components.navigation_' . $slug,
+      \Site::current()->slug . '.components.navigation',
+      'components.navigation_' . $slug,
+      'components.navigation',
+      'neon::menu'
+    ];
   }
 }

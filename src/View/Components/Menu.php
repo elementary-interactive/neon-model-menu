@@ -3,6 +3,7 @@
 namespace Neon\View\Components;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\View;
 use Neon\Services\MenuService;
 
 class Menu extends Component
@@ -44,9 +45,8 @@ class Menu extends Component
    */
   public function render()
   {
-    $x = $this->service->findMenu($this->id)->links;
-    $y = \Site::current()->slug;
-    dd($x, $y);
-    return view('components.alert');
+    return View::first($this->service->getViews($this->id), [
+        'links' => $this->service->findMenu($this->id)->links,
+    ]);
   }
 }
