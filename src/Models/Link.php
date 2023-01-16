@@ -1,6 +1,6 @@
 <?php
 
-namespace Brightly\Mango\Models;
+namespace Neon\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
