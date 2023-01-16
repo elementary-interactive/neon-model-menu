@@ -2,6 +2,7 @@
 
 namespace Neon\Models;
 
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 //     SortableTrait
 // };
 
-class Link extends Model // implements Sortable
+class Link extends EloquentModel // implements Sortable
 {
     use Uuid;
     use SoftDeletes;
