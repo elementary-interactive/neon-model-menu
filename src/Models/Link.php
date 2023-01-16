@@ -2,6 +2,7 @@
 
 namespace Neon\Models;
 
+use Neon\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
