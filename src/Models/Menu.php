@@ -37,21 +37,11 @@ class Menu extends EloquentModel
      *      \Illuminate\Database\Eloquent\Model
      */
     parent::boot();
-
-    /** Add global scope to select by default only items where the related site
-     * is the current site.
-     */
-    // static::addGlobalScope(new \Brightly\Mango\Scopes\SiteScope);
   }
 
   public function links()
   {
-    // return $this->hasMany(\Brightly\Mango\Models\Link::class)
-    //     ->whereNull('parent_id');
-  }
-
-  public function site()
-  {
-    // return $this->belongsTo(Site::class);
+    return $this->hasMany(\Neon\Models\Models\Link::class)
+        ->whereNull('parent_id');
   }
 }
