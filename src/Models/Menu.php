@@ -5,6 +5,7 @@ namespace Neon\Models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neon\Models\Traits\Uuid;
+use Neon\Models\Traits\Punlishable;
 use Neon\Site\Models\Traits\SiteDependencies;
 
 class Menu extends EloquentModel
@@ -18,11 +19,7 @@ class Menu extends EloquentModel
    * @var array
    */
   protected $dates = [
-    'created_at', 'updated_at', 'deleted_at', 'published_at', 'expire_at',
-  ];
-
-  public $users = [
-    'created_by', 'updated_by', 'published_by', 'deleted_by'
+    'created_at', 'updated_at', 'deleted_at'
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
