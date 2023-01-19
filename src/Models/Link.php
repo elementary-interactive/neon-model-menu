@@ -2,23 +2,21 @@
 
 namespace Neon\Models;
 
-use Neon\Models\Traits\Uuid;
-use Neon\Models\Traits\Publishable;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-// use Spatie\EloquentSortable\{
-//     Sortable,
-//     SortableTrait
-// };
+use Neon\Models\Traits\Uuid;
+use Neon\Models\Traits\Publishable;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class Link extends EloquentModel // implements Sortable
+class Link extends EloquentModel implements Sortable
 {
     use Uuid;
     use SoftDeletes;
     use Publishable;
-    // use SortableTrait;
+    use SortableTrait;
 
     const METHOD_GET    = "GET";
     const METHOD_POST   = "POST";
