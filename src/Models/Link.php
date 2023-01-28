@@ -2,16 +2,16 @@
 
 namespace Neon\Models;
 
-use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Neon\Models\Base as BaseModel;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Publishable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
-class Link extends EloquentModel implements Sortable
+class Link extends BaseModel implements Sortable
 {
     use Uuid;
     use SoftDeletes;
@@ -57,7 +57,6 @@ class Link extends EloquentModel implements Sortable
      * @var array
      */
     protected $attributes = [
-        // 'status'    => self::STATUS_DEFAULT,
         'method'    => self::METHOD_GET,
         'target'    => self::TARGET_SELF,
     ];
