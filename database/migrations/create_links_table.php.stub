@@ -1,6 +1,6 @@
 <?php
 
-use Neon\Models\Statuses\LinkStatus;
+use Neon\Models\Statuses\BasicStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +24,7 @@ class CreateLinksTable extends Migration
                 ->default(null);
 
             $table->char('status', 1)
-                ->default(LinkStatus::getDefault());
+                ->default(BasicStatus::getDefault());
             $table->string('title');
             $table->string('slug');
             $table->tinyInteger('order');

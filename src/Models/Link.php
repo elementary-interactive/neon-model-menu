@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Neon\Models\Base as BaseModel;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Publishable;
+use Neon\Models\Traits\Statusable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -17,6 +18,7 @@ class Link extends BaseModel implements Sortable
     use SoftDeletes;
     use Publishable;
     use SortableTrait;
+    use Statusable;
 
     const METHOD_GET    = "GET";
     const METHOD_POST   = "POST";
