@@ -5,7 +5,7 @@ namespace Neon\Models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neon\Models\Traits\Uuid;
-use Neon\Models\Traits\Punlishable;
+use Neon\Models\Traits\Statusable;
 use Neon\Site\Models\Traits\SiteDependencies;
 
 class Menu extends EloquentModel
@@ -13,13 +13,16 @@ class Menu extends EloquentModel
   use SoftDeletes;
   use Uuid;
   use SiteDependencies;
+  use Statusable;
 
   /** The attributes that should be handled as date or datetime.
    *
    * @var array
    */
   protected $dates = [
-    'created_at', 'updated_at', 'deleted_at'
+    'created_at',
+    'updated_at',
+    'deleted_at'
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
