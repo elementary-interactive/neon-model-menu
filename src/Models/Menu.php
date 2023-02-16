@@ -5,6 +5,7 @@ namespace Neon\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Statusable;
+use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
 
 class Menu extends BasicModel

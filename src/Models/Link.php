@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
+use Neon\Models\Basic as BasicModel;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
