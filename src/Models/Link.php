@@ -5,20 +5,19 @@ namespace Neon\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Neon\Models\Base as BaseModel;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
-class Link extends BaseModel implements Sortable
+class Link extends BasicModel implements Sortable
 {
-    use Uuid;
-    use SoftDeletes;
-    use Publishable;
+    use SoftDeletes; // Laravel built in soft delete handler trait.
+    use Uuid; // Neon default to change primary key to UUID.
+    use Publishable; // Neon's trait to handle publishing and/or expiration date.
+    use Statusable; // Neon's Basic status handler enumeration.
     use SortableTrait;
-    use Statusable;
 
     const METHOD_GET    = "GET";
     const METHOD_POST   = "POST";
@@ -36,14 +35,8 @@ class Link extends BaseModel implements Sortable
      *
      * @var array
      */
-    protected $fillable = ['title', 'slug', 'status', 'order'];
-
-    /** The attributes that should be set to authenticated user by default.
-     *
-     * @var array
-     **/
-    public $users = [
-        'created_by', 'updated_by', 'deleted_by', 'pulished_by'
+    protected $fillable = [
+        'title', 'slug', 'status', 'order'
     ];
 
     /** The attributes that should be handled as date or datetime.
@@ -51,7 +44,7 @@ class Link extends BaseModel implements Sortable
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at', 'published_at', 'expire_at',
+        'created_at', 'updated_at', 'deleted_at'
     ];
 
     /** The model's default values for attributes.

@@ -1,9 +1,9 @@
 <?php
 
-use Brightly\Mango\Models\Menu;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Neon\Models\Statuses\BasicStatus;
 
 class CreateMenusTable extends Migration
 {
@@ -19,6 +19,9 @@ class CreateMenusTable extends Migration
             
             $table->string('title');
             $table->string('slug');
+
+            $table->char('status', 1)
+                ->default(BaseStatus::default()->value)
 
             $table->timestamps(); 
             $table->softDeletes();

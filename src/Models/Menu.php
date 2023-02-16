@@ -2,13 +2,12 @@
 
 namespace Neon\Models;
 
-use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Statusable;
 use Neon\Site\Models\Traits\SiteDependencies;
 
-class Menu extends EloquentModel
+class Menu extends BasicModel
 {
   use SoftDeletes;
   use Uuid;

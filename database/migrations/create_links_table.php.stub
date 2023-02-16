@@ -24,7 +24,7 @@ class CreateLinksTable extends Migration
                 ->default(null);
 
             $table->char('status', 1)
-                ->default(BasicStatus::getDefault());
+                ->default(BasicStatus::default());
             $table->string('title');
             $table->string('slug');
             $table->tinyInteger('order');
