@@ -21,7 +21,7 @@ class CreateMenusTable extends Migration
             $table->string('slug');
 
             $table->char('status', 1)
-                ->default(BaseStatus::default()->value)
+                ->default(BasicStatus::default()->value)
 
             $table->timestamps(); 
             $table->softDeletes();
