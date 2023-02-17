@@ -239,6 +239,7 @@ class Link extends BasicModel implements Sortable
     public function buildSortQuery()
     {
         return static::query()
+            ->where('menu_id', $this->menu_id)
             ->where('parent_id', $this->parent_id);
     }
 }

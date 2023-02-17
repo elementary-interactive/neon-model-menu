@@ -21,12 +21,11 @@ class NeonMenuServiceProvider extends ServiceProvider
   {
 
     if ($this->app->runningInConsole()) {
-      if (!class_exists('CreateSitesTable')) {
+      if (!class_exists('CreateMenusTable') || !class_exists('CreateLinksTable')) {
         $this->publishes([
-          __DIR__ . '/../database/migrations/create_links_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_links_table.php'),
           __DIR__ . '/../database/migrations/create_menus_pivot.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_menus_table.php'),
-          // you can add any number of migrations here
-        ], 'neon-site');
+          __DIR__ . '/../database/migrations/create_links_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_links_table.php'),
+        ], 'neon-menu');
       }
     }
 
