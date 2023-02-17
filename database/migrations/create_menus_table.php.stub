@@ -27,8 +27,6 @@ class CreateMenusTable extends Migration
             $table->softDeletes();
 
             $table->primary('id');
-            $table->unique(['slug']);
-            $table->unique(['title']);
             $table->index('deleted_at');
         });
     }

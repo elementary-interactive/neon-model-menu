@@ -54,7 +54,7 @@ class CreateLinksTable extends Migration
             $table->timestamp('published_at')
                 ->nullable()
                 ->default(null);
-            $table->timestamp('expire_at')
+            $table->timestamp('expired_at')
                 ->nullable()
                 ->default(null);
             
