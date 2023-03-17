@@ -1,33 +1,38 @@
 {
-    "name": "neon/model-menu",
-    "description": "",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-      {
-        "name": "Balázs Ercsey",
-        "email": "balazs.ercsey@elementary-interactive.com"
-      }
-    ],
-    "autoload": {
-      "psr-4": {
-        "Neon\\": "src/"
-      }
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Neon\\Tests\\": "tests/"
-      }
-    },
-    "require": {
-      "php": ">=7.1.3",
-      "laravel/framework": ">=5.6"
-    },
-    "repositories": [
-      
-    ],
-    "branch-alias": {
-      
+  "name": "neon/model-menu",
+  "description": "",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Balázs Ercsey",
+      "email": "balazs.ercsey@elementary-interactive.com"
     }
-  }
-  
+  ],
+  "autoload": {
+    "psr-4": {
+      "Neon\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Neon\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Neon\\NeonMenuServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "laravel/framework": "^9.0",
+    "neon/model-base": "dev-develop",
+    "neon/model-publishable": "dev-develop",
+    "spatie/eloquent-sortable": "^4.0"
+  },
+  "repositories": {},
+  "branch-alias": {}
+}
