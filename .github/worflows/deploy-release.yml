@@ -1,0 +1,16 @@
+name: Mirror to GitHub repository
+
+on:
+  push:
+    branches: [release]
+jobs:
+  git-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git-sync
+        uses: wei/git-sync@v3
+        with:
+          source_repo: "${{ secrets.REPOSITORY_DEV }}"
+          source_branch: "release"
+          destination_repo: "${{ secrets.REPOSITORY_LIVE }}"
+          destination_branch: "main"
