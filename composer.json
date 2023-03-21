@@ -27,11 +27,11 @@
     }
   },
   "require": {
-    "php": "^8.1",
-    "laravel/framework": "^9.0",
-    "neon/model-base": "dev-develop",
-    "neon/model-publishable": "dev-develop",
-    "spatie/eloquent-sortable": "^4.0"
+    "php": "^8.0",
+    "laravel/framework": "^10.0",
+    "spatie/eloquent-sortable": "^4.0",
+    "neon/model-base": "^1.0",
+    "neon/model-publishable": "^1.0"
   },
   "repositories": {},
   "branch-alias": {}
