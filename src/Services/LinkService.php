@@ -6,6 +6,7 @@ use Neon\Models\Link;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Neon\Models\Menu;
 
 class LinkService
 {
@@ -54,9 +55,12 @@ class LinkService
     function find(string $slug): ?Link
     {
         $this->slug = $slug;
-        
-        $this->page = Link::whereUrl(Str::start($slug, "/"))
-            ->firstOrFail();
+
+        $this->page = Menu::whereHas('site', function($q) {
+            $q->where('sites.id', app('site')->current()->id);
+        })->whereHas('links', function($q) use ($slug) {
+            $q->where('links.url', Str::start($slug, "/"));
+        })->firstOrFail();
 
         return $this->page;
     }

@@ -42,8 +42,8 @@ class MenuService
   public function getViews(string $slug = ''): array
   {
     return [
-      \Site::current()->slug . '.components.navigation_' . $slug,
-      \Site::current()->slug . '.components.navigation',
+      app('site')->current()->slug . '.components.navigation_' . $slug,
+      app('site')->current()->slug . '.components.navigation',
       'components.navigation_' . $slug,
       'components.navigation',
       'neon::menu'
