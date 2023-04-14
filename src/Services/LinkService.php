@@ -56,11 +56,13 @@ class LinkService
     {
         $this->slug = $slug;
 
-        $this->page = Menu::whereHas('site', function($q) {
-            $q->where('sites.id', app('site')->current()->id);
-        })->whereHas('links', function($q) use ($slug) {
-            $q->where('links.url', Str::start($slug, "/"));
-        })->firstOrFail();
+        $this->page = Link::whereUrl(Str::start($slug, "/"))
+            ->whereHas('menu', function($q) {
+                $q->whereHas('site', function($q) {
+                    $q->where('sites.id', app('site')->current()->id);
+                });
+            })
+            ->firstOrFail();
 
         return $this->page;
     }
