@@ -29,6 +29,8 @@ class NeonMenuServiceProvider extends ServiceProvider
       }
     }
 
+    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
     $this->loadViewComponentsAs('neon', [
       Menu::class,
     ]);
