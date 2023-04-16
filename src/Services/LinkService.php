@@ -37,7 +37,8 @@ class LinkService
             {
                 $templates[] = "{$host}.pages.static.{$this->page->template}"; // 1b
             }
-            $templates[] = "{$host}.pages.default"; // 2
+            $templates[] = "{$host}.pages.{$slug}"; // 2a
+            $templates[] = "{$host}.pages.default"; // 2b
         }
         $templates[] = "web.pages.static.{$slug}"; // 3a
         if ($this->page->template) {
