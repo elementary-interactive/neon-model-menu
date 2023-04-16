@@ -23,7 +23,10 @@ class MenuService
   public function __construct()
   {
     $this->model = config('neon.menu.model', \Neon\Models\Menu::class);
-    $this->menus = $this->model::with('links')->get();
+    $this->menus = $this->model::with('links')
+      ->whereHas('site', function($q) {
+        $q->where('sites.id', app('site')->current()->id);
+      })->get();
   }
 
   /** Get a menu item by slug.
