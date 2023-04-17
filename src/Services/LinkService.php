@@ -3,6 +3,7 @@
 namespace Neon\Services;
 
 use Neon\Models\Link;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -14,7 +15,7 @@ class LinkService
      * 
      * @var string
      */
-    protected $slug;
+    protected $slug = null;
 
     /** The selected page, represents by a link object.
      * 
@@ -55,9 +56,23 @@ class LinkService
 
     function find(string $slug): ?Link
     {
-        $this->slug = $slug;
+        if (count(app('site')->current()->prefixes))
+        {
+            foreach (app('site')->current()->prefixes as $prefix)
+            {
+                if (Str::startsWith($slug, $prefix))
+                {
+                    $this->slug = Str::replace($prefix, '', $slug);
+                }
+            }
+        }
 
-        $this->page = Link::whereUrl(Str::start($slug, "/"))
+        if (is_null($this->slug))
+        {
+            $this->slug = $slug;
+        }
+
+        $this->page = Link::whereUrl(Str::start($this->slug, "/"))
             ->whereHas('menu', function($q) {
                 $q->whereHas('site', function($q) {
                     $q->where('sites.id', app('site')->current()->id);
