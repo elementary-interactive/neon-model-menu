@@ -3,6 +3,7 @@
 namespace Neon\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -25,7 +26,7 @@ class LinkController extends Controller
         $page = $service->find($slug);
 
         return View::first(
-            $service->getViews($request->getHost()),
+            $service->getViews(Arr::first(app('site')->current()->domains)),
             [ // Data to render
                 'page' => $page
             ]
