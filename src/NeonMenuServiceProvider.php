@@ -27,11 +27,15 @@ class NeonMenuServiceProvider extends ServiceProvider
       $migrations = [];
 
       if (!class_exists('CreateMenusTable')) {
-        $migrations[__DIR__ . '/../database/migrations/create_menus_pivot.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_menus_table.php');
+        $migrations[__DIR__ . '/../database/migrations/create_menus_pivot.php.stub'] = database_path('migrations/000001_create_menus_table.php');
       } 
       if (!class_exists('CreateLinksTable')) {
-        $migrations[__DIR__ . '/../database/migrations/create_links_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_links_table.php');
+        $migrations[__DIR__ . '/../database/migrations/create_links_table.php.stub'] = database_path('migrations/000002_create_links_table.php');
       }
+      if (!class_exists('CreateContentsTable')) {
+        $migrations[__DIR__ . '/../database/migrations/create_contents_table.php.stub'] = database_path('migrations/000003_create_contents_table.php');
+      }
+
       $this->publishes($migrations, 'neon-menu');
     }
 
