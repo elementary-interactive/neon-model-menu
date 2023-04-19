@@ -52,7 +52,7 @@ class LinkService
         return $templates;
     }
 
-    function find(string $slug):
+    function find(string $slug)
     {
         if (count(app('site')->current()->prefixes))
         {
