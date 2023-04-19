@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Neon\Attributable\Models\Traits\Attributable;
 use Neon\Models\Traits\Uuid;
 
+use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+
+
 class Content extends Model
 {
     use Attributable;
     use Uuid;
+
+    use HasFlexible;
 
     /**
      * The attributes that should be cast.
@@ -17,7 +22,7 @@ class Content extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'content' => 'json'
+        'content' => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
     ];
 
     /**
@@ -29,11 +34,10 @@ class Content extends Model
         'content'
     ];
 
-    public function __construct()
+    public function getFlexibleContentAttribute()
     {
-        $this->casts['content'] = class_exists(\Whitecube\NovaFlexibleContent\Value\FlexibleCast::class) ? \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class : 'json';
+        return $this->flexible('content');
     }
-
     /**
      *
      */
