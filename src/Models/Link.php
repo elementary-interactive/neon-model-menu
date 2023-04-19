@@ -158,6 +158,7 @@ class Link extends BasicModel implements Sortable
             $class = config('neon.content.model');
 
             $model->content()->save(new $class([
+                'id'            => Str::uuid(),
                 'content'       => ''
             ]));
         }
