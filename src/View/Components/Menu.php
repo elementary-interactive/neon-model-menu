@@ -46,7 +46,7 @@ class Menu extends Component
   public function render()
   {
     return View::first($this->service->getViews($this->id), [
-      'links' => $this->service->findMenu($this->id)?->links ?: [],
+      'links' => $this->service->findMenu($this->id)?->links->sortBy('order') ?: [],
     ]);
   }
 }
