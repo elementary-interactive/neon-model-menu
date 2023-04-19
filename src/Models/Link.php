@@ -155,10 +155,7 @@ class Link extends BasicModel implements Sortable
     {
         if (!$model->route && !$model->link)
         {
-            $class = config('neon.content.model');
-
-            $model->content()->save(new $class([
-                'id'            => Str::uuid(),
+            $model->content()->save(new \Neon\Models\Content([
                 'content'       => ''
             ]));
         }
@@ -169,7 +166,7 @@ class Link extends BasicModel implements Sortable
      */
     public function menu()
     {
-        return $this->belongsTo(config('neon.menu.model'));
+        return $this->belongsTo(\Neon\Models\Menu::class);
     }
 
     /** The content where to this link points.
@@ -185,7 +182,7 @@ class Link extends BasicModel implements Sortable
      */
     public function parent()
     {
-        return $this->belongsTo(config('neon.link.model'), 'parent_id');
+        return $this->belongsTo(\Neon\Models\Link::class, 'parent_id');
     }
 
     /** Children in a multi level navigation.
@@ -193,12 +190,12 @@ class Link extends BasicModel implements Sortable
      */
     public function children()
     {
-        return $this->hasMany(config('neon.link.model'), 'parent_id', 'id');
+        return $this->hasMany(\Neon\Models\Link::class, 'parent_id', 'id');
     }
 
     public function content()
     {
-        return $this->hasOne(\config('neon.content.model'));
+        return $this->hasOne(\Neon\Models\Content::class);
     }
 
 
