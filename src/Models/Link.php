@@ -9,6 +9,7 @@ use Neon\Models\Traits\Uuid;
 use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Neon\Models\Basic as BasicModel;
+use Neon\Site\Models\Traits\SiteDependencies;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -19,6 +20,7 @@ class Link extends BasicModel implements Sortable
     use Publishable; // Neon's trait to handle publishing and/or expiration date.
     use Statusable; // Neon's Basic status handler enumeration.
     use SortableTrait;
+    use SiteDependencies;
 
     const METHOD_GET    = "GET";
     const METHOD_POST   = "POST";
@@ -97,7 +99,7 @@ class Link extends BasicModel implements Sortable
          */
         // static::addGlobalScope(new \Brightly\Mango\Scopes\PublishedScope);
 
-        static::saving(function(Link $model)
+        static::saving(function($model)
         {
             /** Handling URL field: slug is only for the given link, the URL will
              * contain all the generated slugs.
@@ -114,7 +116,7 @@ class Link extends BasicModel implements Sortable
             }
         });
 
-        static::saved(function(Link $model)
+        static::saved(function($model)
         {
             /** The kids aren't alrgiht
              * ...so we check them.
@@ -122,7 +124,7 @@ class Link extends BasicModel implements Sortable
             self::refreshUrl($model);
         });
 
-        static::created(function(Link $model)
+        static::created(function($model)
         {
             /** Check wether content is needed or not.
              */
@@ -132,9 +134,9 @@ class Link extends BasicModel implements Sortable
 
     /** Fix the given link item's children by calling save method on them.
      *
-     * @param \Brightly\Mango\Models\Link $model
+     * @param mixed $model
      */
-    public static function refreshUrl(Link $model): void
+    public static function refreshUrl($model): void
     {
         if ($model->children()->count())
         {
@@ -151,19 +153,14 @@ class Link extends BasicModel implements Sortable
 
     public static function checkContent(Link $model): void
     {
-        // if (!$model->route && !$model->link)
-        // {
-        //     $model->content()->save(new \Brightly\Mango\Models\Content([
-        //         'locale'        => ($model->menu()->first()) ? $model->menu()->first()->locale : config('app.locale'),
-        //         'title'         => $model->title,
-        //         'content'       => '',
-        //         'status'        => $model->status,
-        //         'published_at'  => $model->published_at,
-        //         'published_by'  => $model->published_by,
-        //         'expire_at'     => $model->expire_at,
-        //         'site_id'       => (property_exists($model, 'site_id')) ? $model->site_id : null
-        //     ]));
-        // }
+        if (!$model->route && !$model->link)
+        {
+            $class = config('neon.content.model');
+
+            $model->content()->save(new $class([
+                'content'       => ''
+            ]));
+        }
     }
 
     /** The parent menu identifier where this link belongs.
@@ -171,7 +168,7 @@ class Link extends BasicModel implements Sortable
      */
     public function menu()
     {
-        return $this->belongsTo(\Neon\Models\Menu::class);
+        return $this->belongsTo(config('neon.menu.model'));
     }
 
     /** The content where to this link points.
@@ -187,7 +184,7 @@ class Link extends BasicModel implements Sortable
      */
     public function parent()
     {
-        return $this->belongsTo(Link::class, 'parent_id');
+        return $this->belongsTo(config('neon.link.model'), 'parent_id');
     }
 
     /** Children in a multi level navigation.
@@ -195,7 +192,12 @@ class Link extends BasicModel implements Sortable
      */
     public function children()
     {
-        return $this->hasMany(Link::class, 'parent_id', 'id');
+        return $this->hasMany(config('neon.link.model'), 'parent_id', 'id');
+    }
+
+    public function content()
+    {
+        return $this->hasOne(\config('neon.content.model'));
     }
 
 

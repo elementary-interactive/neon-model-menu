@@ -35,7 +35,7 @@ class MenuService
    * 
    * @return \Brightly\Mango\Menu 
    */
-  public function findMenu(string $slug): ?\Neon\Models\Menu
+  public function findMenu(string $slug)
   {
     return $this->menus
       ->where('slug', $slug)
