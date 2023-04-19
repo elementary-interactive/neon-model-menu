@@ -39,6 +39,6 @@ class Content extends Model
      */
     public function link()
     {
-        return $this->belongsTo(config('neon.link.model'), 'link_id');
+        return $this->belongsTo(\Neon\Models\Link::class, 'link_id');
     }
 }
