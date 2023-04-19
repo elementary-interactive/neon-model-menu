@@ -41,7 +41,7 @@ class Menu extends BasicModel
 
   public function links()
   {
-    return $this->hasMany(config('neon.link.model'))
+    return $this->hasMany(\Neon\Models\Link::class)
         ->whereNull('parent_id');
   }
 }
