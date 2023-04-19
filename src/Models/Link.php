@@ -156,7 +156,7 @@ class Link extends BasicModel implements Sortable
         if (!$model->route && !$model->link)
         {
             $model->content()->save(new \Neon\Models\Content([
-                'content'       => ''
+                'content' => '[]'
             ]));
         }
     }
