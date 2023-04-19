@@ -2,12 +2,10 @@
 
 namespace Neon\Services;
 
-use Neon\Models\Link;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use Neon\Models\Menu;
 
 class LinkService
 {
@@ -19,7 +17,7 @@ class LinkService
 
     /** The selected page, represents by a link object.
      * 
-     * @var \Neon\Models\Link
+     * @var  
      */
     protected $page;
 
@@ -54,7 +52,7 @@ class LinkService
         return $templates;
     }
 
-    function find(string $slug): ?Link
+    function find(string $slug):
     {
         if (count(app('site')->current()->prefixes))
         {
@@ -72,23 +70,26 @@ class LinkService
             $this->slug = $slug;
         }
 
-        $this->page = Link::whereUrl(Str::start($this->slug, "/"))
-            ->whereHas('menu', function($q) {
-                $q->whereHas('site', function($q) {
-                    $q->where('sites.id', app('site')->current()->id);
-                });
+        $model = config('neon.link.model', \Neon\Models\Link::class);
+
+        $this->page = $model::whereUrl(Str::start($this->slug, "/"))
+            ->whereHas('site', function($q) {
+                $q->where('sites.id', app('site')->current()->id);
             })
+            ->with('content')
             ->firstOrFail();
 
         return $this->page;
     }
 
     
-    function static(string $slug): Link
+    function static(string $slug)
     {
         $this->slug = $slug;
 
-        $this->page = new Link();
+        $model = config('neon.link.model', \Neon\Models\Link::class);
+
+        $this->page = new $model();
         $this->page->slug = $slug;
         $this->page->og_description = '';
         $this->page->locale = app()->getLocale();
