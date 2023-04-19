@@ -3,7 +3,7 @@
 namespace Neon\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Neon\Attributable\Models\Traits\Attributables;
+use Neon\Attributable\Models\Traits\Attributable;
 use Neon\Models\Traits\Uuid;
 
 class Content extends Model
