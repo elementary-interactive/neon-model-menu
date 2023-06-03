@@ -12,6 +12,7 @@ use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Link extends BasicModel implements Sortable
 {
@@ -108,7 +109,7 @@ class Link extends BasicModel implements Sortable
             if (!is_null($model->parent_id))
             {
                 $model->url     = Str::start(DB::table($model->getTable())->where('id', $model->parent_id)->pluck('url')->first().'/'.$model->slug, '/');
-                $model->menu_id = DB::table($model->getTable())->where('id', $model->parent_id)->pluck('menu_id')->first();
+                // $model->menu_id = DB::table($model->getTable())->where('id', $model->parent_id)->pluck('menu_id')->first();
             }
             else
             {
@@ -122,13 +123,6 @@ class Link extends BasicModel implements Sortable
              * ...so we check them.
              */
             self::refreshUrl($model);
-        });
-
-        static::created(function($model)
-        {
-            /** Check wether content is needed or not.
-             */
-            self::checkContent($model);
         });
     }
 
@@ -151,22 +145,12 @@ class Link extends BasicModel implements Sortable
         }
     }
 
-    public static function checkContent(Link $model): void
-    {
-        if (!$model->route && !$model->link)
-        {
-            $model->content()->save(new \Neon\Models\Content([
-                'content' => '[]'
-            ]));
-        }
-    }
-
     /** The parent menu identifier where this link belongs.
      *
      */
-    public function menu()
+    public function menus(): belongsToMany
     {
-        return $this->belongsTo(\Neon\Models\Menu::class);
+        return $this->belongsToMany(\Neon\Models\Menu::class);
     }
 
     /** The content where to this link points.

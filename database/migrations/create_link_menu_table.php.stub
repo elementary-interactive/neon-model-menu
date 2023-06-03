@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Neon\Models\Statuses\BasicStatus;
 
-class CreateMenusTable extends Migration
+class CreateLinkMenuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->uuid('id');
+        Schema::create('link_menu', function (Blueprint $table) {
+            $table->uuid('link_id');
+            $table->uuid('menu_id');
             
             $table->string('title');
             $table->string('slug');
@@ -27,7 +28,6 @@ class CreateMenusTable extends Migration
             $table->softDeletes();
 
             $table->primary('id');
-            $table->unique('slug');
             $table->index('deleted_at');
         });
     }
