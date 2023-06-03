@@ -18,17 +18,9 @@ class CreateLinkMenuTable extends Migration
             $table->uuid('link_id');
             $table->uuid('menu_id');
             
-            $table->string('title');
-            $table->string('slug');
-
-            $table->char('status', 1)
-                ->default(BasicStatus::default()->value)
-
-            $table->timestamps(); 
-            $table->softDeletes();
-
             $table->primary('id');
-            $table->index('deleted_at');
+            $table->foreign('link_id')->references('id')->on('links');
+            $table->foreign('menu_id')->references('id')->on('menus');
         });
     }
 
@@ -39,6 +31,6 @@ class CreateLinkMenuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('link_menu');
     }
 }
