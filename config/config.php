@@ -13,7 +13,6 @@ return [
   ],
 
   'content' => [
-    'model' => \Neon\Models\Content::class,
     'layouts' => [
     //   \App\Nova\Flexible\Layouts\NewsLayout::class
     ]

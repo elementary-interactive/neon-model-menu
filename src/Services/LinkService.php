@@ -54,21 +54,7 @@ class LinkService
 
     function find(string $slug)
     {
-        if (count(app('site')->current()->prefixes))
-        {
-            foreach (app('site')->current()->prefixes as $prefix)
-            {
-                if (Str::startsWith($slug, $prefix))
-                {
-                    $this->slug = Str::replace($prefix, '', $slug);
-                }
-            }
-        }
-
-        if (is_null($this->slug))
-        {
-            $this->slug = $slug;
-        }
+        $this->slug = $slug;
 
         $model = config('neon.link.model', \Neon\Models\Link::class);
 
@@ -76,7 +62,6 @@ class LinkService
             ->whereHas('site', function($q) {
                 $q->where('sites.id', app('site')->current()->id);
             })
-            ->with('content')
             ->firstOrFail();
 
         return $this->page;
