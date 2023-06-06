@@ -23,7 +23,7 @@ class MenuService
   public function __construct()
   {
     $this->model = config('neon.menu.model', \Neon\Models\Menu::class);
-    $this->menus = $this->model::with('links')
+    $this->menus = $this->model::with('items')
       ->whereHas('site', function($q) {
         $q->where('sites.id', app('site')->current()->id);
       })->get();

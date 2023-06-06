@@ -15,6 +15,9 @@ class CreateLinksTable extends Migration
     public function up()
     {
         Schema::create('links', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            
             $table->uuid('id');
 
             $table->uuid('menu_id')
@@ -27,7 +30,7 @@ class CreateLinksTable extends Migration
                 ->default(BasicStatus::default());
             $table->string('title');
             $table->string('slug');
-            $table->tinyInteger('order');
+            
             $table->string('og_title')
                 ->nullable()
                 ->default(null)
@@ -48,8 +51,8 @@ class CreateLinksTable extends Migration
                 ->nullable();
             $table->json('parameters')
                 ->nullable();
-            $table->string('target')
-                ->default('_self');
+
+            $table->longtext('content');
 
             $table->timestamp('published_at')
                 ->nullable()
@@ -69,6 +72,7 @@ class CreateLinksTable extends Migration
             $table->index('published_at');
             $table->index('expired_at');
             $table->index('status');
+            $table->fullText('content');
 
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
 

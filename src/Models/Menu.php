@@ -39,9 +39,8 @@ class Menu extends BasicModel
     parent::boot();
   }
 
-  public function links()
+  public function items()
   {
-    return $this->hasMany(\Neon\Models\Link::class)
-        ->whereNull('parent_id');
+    return $this->hasManyMany(\Neon\Models\MenuItem::class);
   }
 }
