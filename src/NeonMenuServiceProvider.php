@@ -21,22 +21,22 @@ class NeonMenuServiceProvider extends ServiceProvider
   {
     $this->publishes([
       __DIR__.'/../config/config.php'   => config_path('neon.php'),
-    ], 'neon-menu');
+    ], 'neon-config');
 
     if ($this->app->runningInConsole()) {
       $migrations = [];
 
       if (!class_exists('CreateMenusTable')) {
-        $migrations[__DIR__ . '/../database/migrations/create_menus_pivot.php.stub'] = database_path('migrations/000001_create_menus_table.php');
+        $migrations[__DIR__ . '/../database/migrations/create_menus_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'000001_create_menus_table.php');
       } 
       if (!class_exists('CreateLinksTable')) {
-        $migrations[__DIR__ . '/../database/migrations/create_links_table.php.stub'] = database_path('migrations/000002_create_links_table.php');
+        $migrations[__DIR__ . '/../database/migrations/create_links_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'000002_create_links_table.php');
       }
       if (!class_exists('CreateMenuItemTable')) {
-        $migrations[__DIR__ . '/../database/migrations/create_menu_item_table.php.stub'] = database_path('migrations/000003_create_menu_item_table.php');
+        $migrations[__DIR__ . '/../database/migrations/create_menu_item_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'000003_create_menu_item_table.php');
       }
 
-      $this->publishes($migrations, 'neon-menu');
+      $this->publishes($migrations, 'neon-db');
     }
 
     $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
