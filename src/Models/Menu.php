@@ -41,6 +41,6 @@ class Menu extends BasicModel
 
   public function items()
   {
-    return $this->hasManyMany(\Neon\Models\MenuItem::class);
+    return $this->hasMany(\Neon\Models\MenuItem::class);
   }
 }

@@ -133,7 +133,7 @@ class Link extends BasicModel
    */
   public function menus(): belongsToMany
   {
-    return $this->belongsToMany(\Neon\Models\MenuItems::class);
+    return $this->belongsToMany(\Neon\Models\MenuItem::class);
   }
 
   /** The content where to this link points.

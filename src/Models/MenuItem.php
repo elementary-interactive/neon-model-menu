@@ -2,17 +2,15 @@
 
 namespace Neon\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Basic as BasicModel;
-use Neon\Site\Models\Traits\SiteDependencies;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
 class MenuItem extends BasicModel implements Sortable
 {
-  use SiteDependencies;
   use SoftDeletes;
   use SortableTrait;
   use Uuid;
@@ -54,6 +52,7 @@ class MenuItem extends BasicModel implements Sortable
   public $sortable = [
       'order_column_name'     => 'order',
       'sort_when_creating'    => true,
+      'sort_on_has_many'      => true,
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
@@ -70,9 +69,14 @@ class MenuItem extends BasicModel implements Sortable
     parent::boot();
   }
 
-  public function link(): HasOne
+  public function menu(): BelongsTo
   {
-    return $this->hasOne(\Neon\Models\Link::class);
+    return $this->belongsTo(\Neon\Models\Menu::class);
+  }
+
+  public function link(): BelongsTo
+  {
+    return $this->belongsTo(\Neon\Models\Link::class);
   }
   
   public function buildSortQuery()
