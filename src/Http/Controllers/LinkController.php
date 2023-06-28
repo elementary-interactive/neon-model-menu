@@ -19,6 +19,7 @@ class LinkController extends Controller
 
     public function show(LinkService $service, Request $request, string $slug)
     {
+        // dd($service, $slug);
         /** Geting the current page.
          * 
          * @var  mixed $page

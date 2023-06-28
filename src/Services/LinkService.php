@@ -52,12 +52,26 @@ class LinkService
 
   function find(string $slug)
   {
-    $this->slug = $slug;
+    $this->slug = $slug; // The slug for we what querying...
 
-    $model = config('neon.link.model', \Neon\Models\Link::class);
+    /** Get the link model's class to query that.
+     * @var string Link model's class.
+     */
+    $link = config('neon.link.model', \Neon\Models\Link::class);
 
-    $this->page = $model::whereUrl(Str::start($this->slug, "/"))
-      ->firstOrFail();
+    $this->page = $link::whereHas('menus', function($query) use ($slug) {
+      $query->where('url', Str::start($slug, "/"));
+    })
+      ->first();
+
+    /** If the URL (by slug) not found in the menu, we try to find it 
+     * directly in links.
+     */
+    if (!$this->page)
+    {
+      $this->page = $link::whereUrl(Str::start($this->slug, "/"))
+        ->firstOrFail();
+    }
 
     return $this->page;
   }

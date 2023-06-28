@@ -4,6 +4,7 @@ namespace Neon\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Neon\Models\Traits\Uuid;
@@ -131,9 +132,11 @@ class Link extends BasicModel
   /** The parent menu identifier where this link belongs.
    *
    */
-  public function menus(): belongsToMany
+  public function menus(): HasMany
   {
-    return $this->belongsToMany(\Neon\Models\MenuItem::class);
+    return $this->hasMany(\Neon\Models\MenuItem::class);
+      // ->wherePivot('dependence_type', 'LIKE', addslashes(self::class))
+      // ->using(\Neon\Models\MenuItem::class);
   }
 
   /** The content where to this link points.

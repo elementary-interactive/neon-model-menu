@@ -4,6 +4,7 @@ namespace Neon\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Neon\Models\Traits\Uuid;
 use Neon\Models\Basic as BasicModel;
 use Spatie\EloquentSortable\Sortable;
@@ -84,5 +85,15 @@ class MenuItem extends BasicModel implements Sortable
       return static::query()
           ->where('menu_id', $this->menu_id)
           ->where('parent_id', $this->parent_id);
+  }
+
+  public function getHrefAttribute(): string
+  {
+    return $this->url ?: $this->link->url;
+  }
+
+  public function setUrlAttribute(string $value)
+  {
+    $this->attributes['url'] = Str::start($value, "/");
   }
 }
