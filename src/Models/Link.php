@@ -12,6 +12,9 @@ use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
+use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+use Illuminate\Support\Facades\View;
+use Neon\Attributable\Models\Traits\Attributable;
 
 class Link extends BasicModel
 {
@@ -20,6 +23,8 @@ class Link extends BasicModel
   use SoftDeletes; // Laravel built in soft delete handler trait.
   use Statusable; // Neon's Basic status handler enumeration.
   use Uuid; // Neon default to change primary key to UUID.
+  use HasFlexible;
+  use Attributable;
 
   const METHOD_GET    = "GET";
   const METHOD_POST   = "POST";
@@ -38,14 +43,6 @@ class Link extends BasicModel
     'title', 'slug', 'status', 'content',
   ];
 
-  /** The attributes that should be handled as date or datetime.
-   *
-   * @var array
-   */
-  protected $dates = [
-    'created_at', 'updated_at', 'deleted_at',
-  ];
-
   /** The model's default values for attributes.
    *
    * @var array
@@ -58,6 +55,9 @@ class Link extends BasicModel
    *
    */
   protected $casts = [
+    'created_at'    => 'date',
+    'updated_at'    => 'date',
+    'deleted_at'    => 'date',
     'parameters'    => 'array',
     'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
   ];
@@ -176,6 +176,21 @@ class Link extends BasicModel
     }
 
     return $href;
+  }
+
+  public function getViewAttribute(): string
+  {
+    $result = '';
+
+    foreach ($this->content as $block)
+    {
+      $result .= View::first(\block_template($block), [
+        'key'         => $block->key(),
+        'attributes'  => $block->getAttributes()
+      ]);
+    }
+
+    return $result;
   }
 
   // public function getOgDataAttribute(): array
