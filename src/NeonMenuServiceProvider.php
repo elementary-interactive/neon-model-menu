@@ -1,17 +1,14 @@
 <?php
 
-namespace Neon\Site;
+namespace Neon;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Http\Kernel;
-use Neon\Site\Http\Middleware\SiteMiddleware;
-use Neon\Site\Console\SiteClearCommand;
-use Neon\Site\Console\SiteGenerateSiteIdCommand;
-use Neon\View\Components\Favicon;
+use Neon\View\Components\Menu;
 
-class NeonSiteServiceProvider extends ServiceProvider
+class NeonMenuServiceProvider extends ServiceProvider
 {
 
   /** Bootstrap any application services.
@@ -22,49 +19,32 @@ class NeonSiteServiceProvider extends ServiceProvider
    */
   public function boot(Kernel $kernel): void
   {
-    // $kernel->pushMiddleware(SiteMiddleware::class);
-    
-    if ($this->app->runningInConsole())
-    {
-      // file_put_contents(__DIR__.'/../config/config.php', Str::of(file_get_contents(__DIR__.'/../config/config.php'))->replace('##uuid##', Str::uuid()));
-      // Storage::put(__DIR__.'/../config/config.php', Str::of(Storage::get(__DIR__.'/../config/config.php'))->replace('##uuid##', Str::uuid()));
+    $this->publishes([
+      __DIR__.'/../config/config.php'   => config_path('neon.php'),
+    ], 'neon-config');
 
-      $this->publishes([
-        __DIR__.'/../config/config_standalone.php'   => config_path('site.php'),
-      ], 'neon-configs');
-      // $this->publishes([
-      //   __DIR__.'/../config/config_database.php'   => config_path('site.php'),
-      // ], 'neon-site-database');
+    if ($this->app->runningInConsole()) {
+      $migrations = [];
 
-      if (!class_exists('CreateSitesTable')) {
-        $this->publishes([
-          __DIR__ . '/../database/migrations/create_sites_table.php.stub'           => database_path('migrations/' . date('Y_m_d_', time()) . '000001_create_sites_table.php'),
-        ], 'neon-migrations');
+      if (!class_exists('CreateMenusTable')) {
+        $migrations[__DIR__ . '/../database/migrations/create_menus_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'_000001_create_menus_table.php');
+      } 
+      if (!class_exists('CreateLinksTable')) {
+        $migrations[__DIR__ . '/../database/migrations/create_links_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'_000002_create_links_table.php');
+      }
+      if (!class_exists('CreateMenuItemTable')) {
+        $migrations[__DIR__ . '/../database/migrations/create_menu_item_table.php.stub'] = database_path('migrations/'.date('Y_m_d').'_000003_create_menu_item_table.php');
       }
 
-      if (!class_exists('CreateSitesPivot')) {
-        $this->publishes([
-          __DIR__ . '/../database/migrations/create_sites_pivot.php.stub'           => database_path('migrations/' . date('Y_m_d_', time()) . '000002_create_sites_pivot.php'),
-        ], 'neon-migrations');
-      }
-
-      $this->loadViewComponentsAs('neon', [
-        Favicon::class,
-      ]);
-  
-      $this->loadViewsFrom(__DIR__ . '/../resources/views/components', 'neon');
-
-      $this->commands([
-          SiteGenerateSiteIdCommand::class,
-          SiteClearCommand::class
-      ]);
+      $this->publishes($migrations, 'neon-migrations');
     }
-  }
 
-  public function register()
-  {
-    $this->app->singleton('site', function($app) {
-      return new Site();
-    });
+    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+    $this->loadViewComponentsAs('neon', [
+      Menu::class,
+    ]);
+
+    $this->loadViewsFrom(__DIR__ . '/../resources/views/components', 'neon');
   }
 }
