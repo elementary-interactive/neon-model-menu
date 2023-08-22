@@ -68,7 +68,7 @@ class Link extends BasicModel
    * @see https://github.com/laravel/framework/issues/25546
    * @see https://laravel.com/docs/6.x/eloquent#global-scopes
    */
-  protected static function boot()
+  public static function boot()
   {
     /** We MUST call the parent boot method  in this case the:
      *      \Illuminate\Database\Eloquent\Model
@@ -191,6 +191,13 @@ class Link extends BasicModel
     }
 
     return $result;
+  }
+
+  public function isActive($true_value = true, $false_value)
+  {
+    return (request()->segment(1) == Arr::first(Str::of($this->url)->explode('/'), function($value) {
+      return Str::of($value)->length > 0;
+    })) ? $true_value : $false_value;
   }
 
   // public function getOgDataAttribute(): array
