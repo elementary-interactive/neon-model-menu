@@ -15,6 +15,10 @@ class Menu extends BasicModel
   use SiteDependencies;
   use Statusable;
 
+  protected $fillable = [
+    'title', 'slug'
+  ];
+
   /** The attributes that should be handled as date or datetime.
    *
    * @var array

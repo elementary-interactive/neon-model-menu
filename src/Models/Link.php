@@ -12,7 +12,7 @@ use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
-use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+// use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
 use Illuminate\Support\Facades\View;
 use Neon\Attributable\Models\Traits\Attributable;
 
@@ -23,7 +23,7 @@ class Link extends BasicModel
   use SoftDeletes; // Laravel built in soft delete handler trait.
   use Statusable; // Neon's Basic status handler enumeration.
   use Uuid; // Neon default to change primary key to UUID.
-  use HasFlexible;
+  // use HasFlexible;
   use Attributable;
 
   const METHOD_GET    = "GET";
