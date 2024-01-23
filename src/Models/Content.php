@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Neon\Attributable\Models\Traits\Attributable;
 use Neon\Models\Traits\Uuid;
 
-use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+// use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
 
 
 class Content extends Model
@@ -14,7 +14,7 @@ class Content extends Model
     use Attributable;
     use Uuid;
 
-    use HasFlexible;
+    // use HasFlexible;
 
     /**
      * The attributes that should be cast.
@@ -22,7 +22,7 @@ class Content extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'content' => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
+        // 'content' => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
     ];
 
     /**
