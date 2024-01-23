@@ -21,6 +21,24 @@ class LinkService
    */
   protected $page;
 
+  public static final function cleanup_slug(string $slug): string
+  {
+    $new_slug = '';
+
+    if (class_exists(\Mcamara\LaravelLocalization\Facades\LaravelLocalization::class)) 
+    {
+      try {
+        $new_slug = implode('/', array_diff(explode('/', $slug), [\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale()]));
+      }
+      catch (\Exception $e)
+      {
+          //    ^ _ ^
+      }
+    }
+
+    return $new_slug;
+  }
+
   function getViews(string $host = null): array
   {
     $templates = [];

@@ -12,12 +12,17 @@ use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
-// use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+// // use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
 use Illuminate\Support\Facades\View;
 use Neon\Attributable\Models\Traits\Attributable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Link extends BasicModel
+
+class Link extends BasicModel implements HasMedia
 {
+  use InteractsWithMedia;
   use Publishable; // Neon's trait to handle publishing and/or expiration date.
   use SiteDependencies;
   use SoftDeletes; // Laravel built in soft delete handler trait.
@@ -40,7 +45,8 @@ class Link extends BasicModel
    * @var array
    */
   protected $fillable = [
-    'title', 'slug', 'status', 'content',
+    'title', 'slug', 'status', 'content', 'og_title', 'og_image',
+    'og_description', 'published_at', 'expired_at'
   ];
 
   /** The model's default values for attributes.
@@ -48,7 +54,8 @@ class Link extends BasicModel
    * @var array
    */
   protected $attributes = [
-    'method'    => self::METHOD_GET,
+    'method'        => self::METHOD_GET,
+    'content'       => '[]',
   ];
 
   /** Cast attribute to array...
@@ -59,7 +66,8 @@ class Link extends BasicModel
     'updated_at'    => 'date',
     'deleted_at'    => 'date',
     'parameters'    => 'array',
-    'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
+    'content'       => 'array',
+    // 'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
@@ -124,9 +132,35 @@ class Link extends BasicModel
     }
   }
 
-  public function getFlexibleContentAttribute()
+  public function registerMediaConversions(Media $media = null): void
   {
-    return $this->flexible('content');
+    foreach (config('neon-menu.conversations', []) as $converstaion => $params)
+    {
+      $media_conversation = $this->addMediaConversion($converstaion);
+
+      if (array_key_exists('fit', $params) && isset($params['fit']))
+      {
+        $media_conversation->fit($params['fit']);
+      }
+      if (array_key_exists('height', $params) && isset($params['height']))
+      {
+        $media_conversation->fit($params['height']);
+      }
+      if (array_key_exists('width', $params) && isset($params['width']))
+      {
+        $media_conversation->fit($params['width']);
+      }
+      if (array_key_exists('optimized', $params) && $params['optimize'] === false)
+      {
+        $media_conversation->nonOptimized();
+      }
+      if (array_key_exists('queued', $params) && $params['queued'] === true)
+      {
+        $media_conversation->queued();
+      } else {
+        $media_conversation->nonQueued();
+      }
+    }
   }
 
   /** The parent menu identifier where this link belongs.
