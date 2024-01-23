@@ -19,15 +19,14 @@ class LinkController extends Controller
 
     public function show(LinkService $service, Request $request, string $slug)
     {
-        // dd($service, $slug);
+        $slug = $service::cleanup_slug($slug);
+        
         /** Geting the current page.
          * 
          * @var  mixed $page
          */
         $page = $service->find($slug);
-
-        // dd($page, $page->content->first());
-
+        
         return View::first(
             $service->getViews(Arr::first(app('site')->current()->domains)),
             [ // Data to render
