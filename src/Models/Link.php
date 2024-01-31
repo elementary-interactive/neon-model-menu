@@ -173,14 +173,6 @@ class Link extends BasicModel implements HasMedia
       // ->using(\Neon\Models\MenuItem::class);
   }
 
-  /** The content where to this link points.
-   *
-   */
-  // public function content()
-  // {
-  //     return $this->morphOne(\Brightly\Mango\Models\Content::class, 'contentable');
-  // }
-
   /** The parent of the given menu item, for multi level navigation.
    *
    */
