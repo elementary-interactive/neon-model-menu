@@ -16,7 +16,7 @@ class Menu extends BasicModel
   use Statusable;
 
   protected $fillable = [
-    'title', 'slug'
+    'title', 'slug', 'status'
   ];
 
   /** The attributes that should be handled as date or datetime.
