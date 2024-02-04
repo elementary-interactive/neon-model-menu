@@ -1,6 +1,6 @@
 {
   "name": "neon/menu",
-  "version": "3.0.0-alpha-4",
+  "version": "3.0.0-alpha-5",
   "description": "",
   "type": "library",
   "license": "MIT",
@@ -30,9 +30,10 @@
   "require": {
     "php": "^8.0",
     "laravel/framework": "^10.0",
-    "spatie/eloquent-sortable": "^4.0",
     "neon/model-base": "^1.0",
-    "neon/model-publishable": "^1.0"
+    "neon/model-publishable": "^1.0",
+    "spatie/eloquent-sortable": "^4.0",
+    "spatie/laravel-package-tools": "^1.14.0"
   },
   "repositories": {},
   "branch-alias": {}
