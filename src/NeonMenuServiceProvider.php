@@ -18,7 +18,7 @@ class NeonMenuServiceProvider extends PackageServiceProvider
 
   public function configurePackage(Package $package): void
   {
-    AboutCommand::add('Neon', 'Menu', self::VERSION);
+    AboutCommand::add('N30N', 'Menu', self::VERSION);
 
     $package
       ->name('neon-menu')
