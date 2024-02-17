@@ -14,19 +14,26 @@ class LinkController extends Controller
 {
     public function index(LinkService $service, Request $request)
     {
-        return $this->show($service, $request, config('site.routes.index'));
+        return $this->show($service, $request, null);
     }
 
-    public function show(LinkService $service, Request $request, string $slug)
+    public function show(LinkService $service, Request $request, string $slug = null)
     {
-        $slug = $service::cleanup_slug($slug);
-        
-        /** Geting the current page.
-         * 
-         * @var  mixed $page
-         */
-        $page = $service->find($slug);
-        
+        if (!$slug)
+        {
+            $page = $service->index();
+        }
+        else
+        {
+            $slug = $service::cleanup_slug($slug);
+            
+            /** Geting the current page.
+             * 
+             * @var  mixed $page
+             */
+            $page = $service->find($slug);
+        }
+
         return View::first(
             $service->getViews(Arr::first(app('site')->current()->domains)),
             [ // Data to render

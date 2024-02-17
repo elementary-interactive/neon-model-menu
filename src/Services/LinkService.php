@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Neon\Models\Link;
 
 class LinkService
 {
@@ -68,7 +69,7 @@ class LinkService
     return $templates;
   }
 
-  function find(string $slug)
+  function find(string $slug): Link
   {
     $this->slug = $slug; // The slug for we what querying...
 
@@ -94,8 +95,21 @@ class LinkService
     return $this->page;
   }
 
+  function index(): Link
+  {
+    $link = config('neon.link.model', \Neon\Models\Link::class);
 
-  function static(string $slug)
+    /** If the URL (by slug) not found in the menu, we try to find it 
+     * directly in links.
+     */
+    $this->page = $link::whereIsIndex(true)
+      ->firstOrFail();
+    
+      return $this->page;
+  }
+
+
+  function static(string $slug): Link
   {
     $this->slug = $slug;
 

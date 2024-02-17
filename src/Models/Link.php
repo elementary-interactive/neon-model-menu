@@ -46,7 +46,7 @@ class Link extends BasicModel implements HasMedia
    */
   protected $fillable = [
     'title', 'slug', 'status', 'content', 'og_title', 'og_image',
-    'og_description', 'published_at', 'expired_at'
+    'og_description', 'is_index', 'published_at', 'expired_at'
   ];
 
   /** The model's default values for attributes.
@@ -67,6 +67,7 @@ class Link extends BasicModel implements HasMedia
     'deleted_at'    => 'date',
     'parameters'    => 'array',
     'content'       => 'array',
+    'is_index'      => 'boolean',
     // 'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
   ];
 

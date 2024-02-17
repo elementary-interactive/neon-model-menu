@@ -14,7 +14,7 @@ use Spatie\LaravelPackageTools\Package;
 
 class NeonMenuServiceProvider extends PackageServiceProvider
 {
-  const VERSION = '3.0.0-alpha-6';
+  const VERSION = '3.0.0-alpha-7';
 
   public function configurePackage(Package $package): void
   {
@@ -26,9 +26,12 @@ class NeonMenuServiceProvider extends PackageServiceProvider
       ->hasViews()
       ->hasRoutes('web')
       ->hasViewComponent('neon-menu', Menu::class)
-      ->hasMigration('create_menus_table')
-      ->hasMigration('create_menu_items_table')
-      ->hasMigration('create_links_table');
+      ->hasMigrations([
+        'create_menus_table',
+        'create_menu_items_table',
+        'create_links_table',
+        'add_index_to_links_table'
+      ]);
   }
 
 
