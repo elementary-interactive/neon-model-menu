@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Neon\Models\Traits\Uuid;
 use Neon\Models\Basic as BasicModel;
+use Neon\Models\Statuses\BasicStatus;
+use Neon\Models\Traits\Statusable;
+use Neon\Models\Traits\Uuid;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -15,6 +17,7 @@ class MenuItem extends BasicModel implements Sortable
 {
   use SoftDeletes;
   use SortableTrait;
+  use Statusable;
   use Uuid;
 
   const TARGET_SELF   = "_self";
@@ -26,7 +29,7 @@ class MenuItem extends BasicModel implements Sortable
    * @var array
    */
   protected $fillable = [
-    'title', 'order', 'url', 'target', 'menu_id', 'link_id', 'is_outside'
+    'title', 'order', 'url', 'target', 'menu_id', 'link_id', 'is_outside', 'status'
   ];
 
   /** The attributes that should be handled as date or datetime.
@@ -45,7 +48,7 @@ class MenuItem extends BasicModel implements Sortable
    */
   protected $attributes = [
     'target'      => self::TARGET_SELF,
-    'is_outside'  => false,
+    'is_outside'  => false
   ];
 
   /** Set up sorting.
