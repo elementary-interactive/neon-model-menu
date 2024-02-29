@@ -39,6 +39,8 @@ class Link extends BasicModel implements HasMedia
 
   const OG_TYPE       = "website";
 
+  const MEDIA         = "link_media";
+
   /**
    * The attributes that are mass assignable.
    *
@@ -135,33 +137,17 @@ class Link extends BasicModel implements HasMedia
 
   public function registerMediaConversions(Media $media = null): void
   {
-    foreach (config('neon-menu.conversations', []) as $converstaion => $params)
-    {
-      $media_conversation = $this->addMediaConversion($converstaion);
+    $this->addMediaConversion('thumb')
+      ->height(100)
+      ->fit(\Spatie\Image\Manipulations::FIT_MAX, 100, 100)
+      ->optimize()
+      ->performOnCollections(self::MEDIA);
 
-      if (array_key_exists('fit', $params) && isset($params['fit']))
-      {
-        $media_conversation->fit($params['fit']);
-      }
-      if (array_key_exists('height', $params) && isset($params['height']))
-      {
-        $media_conversation->fit($params['height']);
-      }
-      if (array_key_exists('width', $params) && isset($params['width']))
-      {
-        $media_conversation->fit($params['width']);
-      }
-      if (array_key_exists('optimized', $params) && $params['optimize'] === false)
-      {
-        $media_conversation->nonOptimized();
-      }
-      if (array_key_exists('queued', $params) && $params['queued'] === true)
-      {
-        $media_conversation->queued();
-      } else {
-        $media_conversation->nonQueued();
-      }
-    }
+    $this->addMediaConversion('medium')
+      ->height(600)
+      ->fit(\Spatie\Image\Manipulations::FIT_MAX, 600, 600)
+      ->optimize()
+      ->performOnCollections(self::MEDIA);
   }
 
   /** The parent menu identifier where this link belongs.

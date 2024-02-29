@@ -1,7 +1,5 @@
 <?php
 
-use Spatie\Image\Enums\Fit;
-
 return [
   /**
    * ...
@@ -19,12 +17,4 @@ return [
       //   \App\Nova\Flexible\Layouts\NewsLayout::class
     ]
   ],
-  
-  'conversations' => [
-    'og_image' => [
-      'fit'           => Fit::Max,
-      'height'        => 300,
-      'optimize'      => true,
-    ],
-  ]
 ];
