@@ -2,35 +2,24 @@
 
 namespace Neon\Admin\Resources;
 
+use Camya\Filament\Forms\Components\TitleWithSlugInput;
 use Filament\Forms;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Neon\Admin\Resources\Traits\NeonAdmin;
 use Neon\Admin\Resources\MenuResource\Pages;
 use Neon\Admin\Resources\MenuResource\RelationManagers;
-use Neon\Attributable\Models\Attribute;
 use Neon\Models\Menu;
 use Neon\Models\Scopes\ActiveScope;
 use Neon\Models\Statuses\BasicStatus;
 use Neon\Site\Models\Scopes\SiteScope;
-use Neon\Site\Models\Site;
 
 class MenuResource extends Resource
 {
@@ -78,36 +67,33 @@ class MenuResource extends Resource
         ->label(__('neon-admin::admin.resources.menu.form.fields.site.label'))
         ->multiple()
         ->relationship(titleAttribute: 'title'),
-      Fieldset::make(__('neon-admin::admin.resources.menu.form.fieldset.name'))
-        ->schema([
-          TextInput::make('title')
-            ->label(__('neon-admin::admin.resources.menu.form.fields.title.label'))
-            ->afterStateUpdated(function ($get, $set, ?string $state) {
-              if (!$get('is_slug_changed_manually') && filled($state)) {
-                $set('slug', Str::slug($state));
-              }
-            })
-            ->reactive()
-            ->required()
-            ->maxLength(255),
-          TextInput::make('slug')
-            ->label(__('neon-admin::admin.resources.menu.form.fields.slug.label'))
-            ->afterStateUpdated(function (Forms\Set $set) {
-              $set('is_slug_changed_manually', true);
-            })
-            ->required(),
-          Forms\Components\Hidden::make('is_slug_changed_manually')
-            ->default(false)
-            ->dehydrated(false),
+      TitleWithSlugInput::make(
+        fieldTitle: 'title',
+        titleLabel: __('neon-admin::admin.resources.menu.form.fields.title.label'),
+        fieldSlug: 'slug',
+        slugLabel: __('neon-admin::admin.resources.menu.form.fields.slug.label'),
+        urlHostVisible: false
+      ),
+      Forms\Components\Section::make()
+        ->columns([
+          'sm' => 3,
+          'xl' => 6,
+          '2xl' => 9,
         ])
-        ->columns(2),
-      Select::make('status')
-        ->label(__('neon-admin::admin.resources.menu.form.fields.status.label'))
-        ->required()
-        ->reactive()
-        ->native(false)
-        ->default(BasicStatus::default())
-        ->options(BasicStatus::class),
+        ->schema([
+          Forms\Components\Select::make('status')
+            ->label(__('neon-admin::admin.resources.menu.form.fields.status.label'))
+            ->required()
+            ->reactive()
+            ->native(false)
+            ->default(BasicStatus::default())
+            ->options(BasicStatus::class)
+            ->columnSpan([
+              'sm' => 1,
+              'xl' => 2,
+              '2xl' => 3,
+            ])
+        ])
     ];
     
     return $t;

@@ -1,6 +1,6 @@
 {
   "name": "neon/menu",
-  "version": "3.0.0-alpha-8",
+  "version": "3.0.0-alpha-9",
   "description": "",
   "type": "library",
   "license": "MIT",
@@ -29,13 +29,26 @@
     }
   },
   "require": {
-    "php": "^8.0",
+    "blendbyte/filament-title-with-slug": "1.0.6",
     "laravel/framework": "^10.0",
+    "neon/attributable": "*",
     "neon/model-base": "^1.0",
-    "neon/model-publishable": "^1.0",
+    "neon/model-uuid": "^1.0",
+    "neon/model-publishable": "*",
     "spatie/eloquent-sortable": "^4.0",
     "spatie/laravel-package-tools": "^1.14.0"
   },
-  "repositories": {},
-  "branch-alias": {}
+  "repositories": [],
+  "branch-alias": [],
+  "config": {
+    "platform": {
+      "php": "^8.1"
+    },
+    "allow-plugins": {
+      "pestphp/pest-plugin": false,
+      "phpstan/extension-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": false
 }
