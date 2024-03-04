@@ -25,7 +25,7 @@ class NeonMenuServiceProvider extends PackageServiceProvider
       ->hasConfigFile()
       ->hasViews()
       ->hasRoutes('web')
-      ->hasViewComponent('neon-menu', Menu::class)
+      ->hasViewComponent('neon', Menu::class)
       ->hasMigrations([
         'create_menus_table',
         'create_menu_items_table',
