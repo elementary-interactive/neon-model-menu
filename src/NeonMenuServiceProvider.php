@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Http\Kernel;
-use Neon\View\Components\Menu;
+use Neon\Components\Menu;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 
