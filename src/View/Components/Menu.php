@@ -1,6 +1,6 @@
 <?php
 
-namespace Neon\Components;
+namespace Neon\Menu\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\View;
