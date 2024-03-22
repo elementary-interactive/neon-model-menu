@@ -31,7 +31,7 @@ class Menu extends Component
    * 
    * @return void
    */
-  public function __construct(MenuService $service, $id)
+  public function __construct(MenuService $service, string $id)
   {
     $this->service = $service;
 
