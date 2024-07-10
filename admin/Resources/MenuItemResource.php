@@ -162,12 +162,13 @@ class MenuItemResource extends Resource
         ->schema([
           TextInput::make('title')
             ->label(trans('neon-admin::admin.resources.menu-item.form.fields.title.label'))
+            ->lazy()
             ->afterStateUpdated(function ($get, $set, ?string $state) {
-              if (!$get('is_slug_changed_manually') && filled($state) && !$get('is_outside')) {
-                $set('slug', Str::slug($state));
+              if (filled($state) && !$get('is_outside')) {
+                // if (!$get('is_slug_changed_manually') && filled($state) && !$get('is_outside')) {
+                $set('url', Str::slug($state));
               }
             })
-            ->reactive()
             ->required()
             ->maxLength(255),
           Select::make('target')
@@ -260,6 +261,13 @@ class MenuItemResource extends Resource
             ->schema([
               TextInput::make('title')
                 ->label(trans('neon-admin::admin.resources.menu-item.form.fields.title.label'))
+                ->lazy()
+                ->afterStateUpdated(function ($get, $set, ?string $state) {
+                  if (filled($state) && !$get('is_outside')) {
+                    // if (!$get('is_slug_changed_manually') && filled($state) && !$get('is_outside')) {
+                    $set('url', Str::slug($state));
+                  }
+                })
                 ->required()
                 ->maxLength(255),
               Select::make('target')
@@ -281,8 +289,8 @@ class MenuItemResource extends Resource
             ->columns(2)
         ])
         ->orderColumn('order')
-        ->mutateRelationshipDataBeforeSaveUsing(function (array $data, Get $get): array {
-          $data['menu_id'] = $get('../../menu_id');
+        ->mutateRelationshipDataBeforeCreateUsing(function (array $data, Get $get): array {
+          $data['menu_id'] = $get('menu_id');
 
           return $data;
         })
