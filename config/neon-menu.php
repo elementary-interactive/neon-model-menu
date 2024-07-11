@@ -14,7 +14,7 @@ return [
 
   'content' => [
     'layouts' => [
-    //   \App\Nova\Flexible\Layouts\NewsLayout::class
+      //   \App\Nova\Flexible\Layouts\NewsLayout::class
     ]
-  ]
+  ],
 ];

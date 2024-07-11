@@ -31,7 +31,7 @@ class Menu extends Component
    * 
    * @return void
    */
-  public function __construct(MenuService $service, $id)
+  public function __construct(MenuService $service, string $id)
   {
     $this->service = $service;
 
@@ -46,7 +46,7 @@ class Menu extends Component
   public function render()
   {
     return View::first($this->service->getViews($this->id), [
-      'links' => $this->service->findMenu($this->id)?->links->sortBy('order') ?: [],
+      'links' => $this->service->findMenu($this->id)?->items?->sortBy('order') ?: [],
     ]);
   }
 }

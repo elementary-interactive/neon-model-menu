@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Neon\Models\Statuses\BasicStatus;
 
-class CreateMenusTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class CreateMenusTable extends Migration
             $table->string('slug');
 
             $table->char('status', 1)
-                ->default(BasicStatus::default()->value)
+                ->default(BasicStatus::default()->value);
 
             $table->timestamps(); 
             $table->softDeletes();
@@ -41,4 +41,4 @@ class CreateMenusTable extends Migration
     {
         Schema::dropIfExists('menus');
     }
-}
+};

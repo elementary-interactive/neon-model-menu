@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Neon\Models\Statuses\BasicStatus;
 
-class CreateMenuItemTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,11 @@ class CreateMenuItemTable extends Migration
             $table->uuid('parent_id')
                 ->nullable()
                 ->default(null);
-            $table->uuid('link_id');
+            $table->uuid('link_id')
+                ->nullable()
+                ->default(null);
+            $table->boolean('is_outside')
+                ->default(false);
             $table->string('title');
             $table->string('url')
                 ->nullable()
@@ -33,6 +37,7 @@ class CreateMenuItemTable extends Migration
             $table->softDeletes();
 
             $table->primary('id');
+            $table->index('status');
             $table->index('deleted_at');
             $table->foreign('link_id')->references('id')->on('links');
             $table->foreign('menu_id')->references('id')->on('menus');
@@ -49,4 +54,4 @@ class CreateMenuItemTable extends Migration
     {
         Schema::dropIfExists('menu_items');
     }
-}
+};

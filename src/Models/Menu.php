@@ -15,6 +15,10 @@ class Menu extends BasicModel
   use SiteDependencies;
   use Statusable;
 
+  protected $fillable = [
+    'title', 'slug', 'status'
+  ];
+
   /** The attributes that should be handled as date or datetime.
    *
    * @var array
@@ -41,6 +45,6 @@ class Menu extends BasicModel
 
   public function items()
   {
-    return $this->hasManyMany(\Neon\Models\MenuItem::class);
+    return $this->hasMany(\Neon\Models\MenuItem::class);
   }
 }

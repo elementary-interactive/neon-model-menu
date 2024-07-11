@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinksTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,20 +20,18 @@ class CreateLinksTable extends Migration
             
             $table->uuid('id');
 
-            $table->uuid('menu_id')
-                ->nullable();
             $table->uuid('parent_id')
                 ->nullable()
                 ->default(null);
 
             $table->char('status', 1)
-                ->default(BasicStatus::default());
+                ->default(BasicStatus::default()->value);
             $table->string('title');
             $table->string('slug');
             
             $table->string('og_title')
                 ->nullable()
-                ->default(null)
+                ->default(null);
             $table->mediumText('og_description')
                 ->nullable()
                 ->default(null);
@@ -67,14 +65,12 @@ class CreateLinksTable extends Migration
             /** Set keys.
              */
             $table->primary('id');
-            $table->unique(['menu_id', 'parent_id', 'slug']);
+            $table->unique(['parent_id', 'slug']);
             $table->index('deleted_at');
             $table->index('published_at');
             $table->index('expired_at');
             $table->index('status');
             $table->fullText('content');
-
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
 
         });
     }

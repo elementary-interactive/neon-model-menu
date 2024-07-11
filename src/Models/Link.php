@@ -4,6 +4,7 @@ namespace Neon\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Neon\Models\Traits\Uuid;
@@ -11,14 +12,24 @@ use Neon\Models\Traits\Publishable;
 use Neon\Models\Traits\Statusable;
 use Neon\Models\Basic as BasicModel;
 use Neon\Site\Models\Traits\SiteDependencies;
+// // use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+use Illuminate\Support\Facades\View;
+use Neon\Attributable\Models\Traits\Attributable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Link extends BasicModel
+
+class Link extends BasicModel implements HasMedia
 {
+  use InteractsWithMedia;
   use Publishable; // Neon's trait to handle publishing and/or expiration date.
   use SiteDependencies;
   use SoftDeletes; // Laravel built in soft delete handler trait.
   use Statusable; // Neon's Basic status handler enumeration.
   use Uuid; // Neon default to change primary key to UUID.
+  // use HasFlexible;
+  use Attributable;
 
   const METHOD_GET    = "GET";
   const METHOD_POST   = "POST";
@@ -28,21 +39,16 @@ class Link extends BasicModel
 
   const OG_TYPE       = "website";
 
+  const MEDIA         = "link_media";
+
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
   protected $fillable = [
-    'title', 'slug', 'status', 'content',
-  ];
-
-  /** The attributes that should be handled as date or datetime.
-   *
-   * @var array
-   */
-  protected $dates = [
-    'created_at', 'updated_at', 'deleted_at',
+    'title', 'slug', 'status', 'content', 'og_title', 'og_image',
+    'og_description', 'is_index', 'published_at', 'expired_at'
   ];
 
   /** The model's default values for attributes.
@@ -50,15 +56,21 @@ class Link extends BasicModel
    * @var array
    */
   protected $attributes = [
-    'method'    => self::METHOD_GET,
+    'method'        => self::METHOD_GET,
+    'content'       => '[]',
   ];
 
   /** Cast attribute to array...
    *
    */
   protected $casts = [
+    'created_at'    => 'date',
+    'updated_at'    => 'date',
+    'deleted_at'    => 'date',
     'parameters'    => 'array',
-    'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
+    'content'       => 'array',
+    'is_index'      => 'boolean',
+    // 'content'       => \Whitecube\NovaFlexibleContent\Value\FlexibleCast::class
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
@@ -67,7 +79,7 @@ class Link extends BasicModel
    * @see https://github.com/laravel/framework/issues/25546
    * @see https://laravel.com/docs/6.x/eloquent#global-scopes
    */
-  protected static function boot()
+  public static function boot()
   {
     /** We MUST call the parent boot method  in this case the:
      *      \Illuminate\Database\Eloquent\Model
@@ -123,26 +135,30 @@ class Link extends BasicModel
     }
   }
 
-  public function getFlexibleContentAttribute()
+  public function registerMediaConversions(Media $media = null): void
   {
-    return $this->flexible('content');
+    $this->addMediaConversion('thumb')
+      ->height(100)
+      ->fit(\Spatie\Image\Manipulations::FIT_MAX, 100, 100)
+      ->optimize()
+      ->performOnCollections(self::MEDIA);
+
+    $this->addMediaConversion('medium')
+      ->height(600)
+      ->fit(\Spatie\Image\Manipulations::FIT_MAX, 600, 600)
+      ->optimize()
+      ->performOnCollections(self::MEDIA);
   }
 
   /** The parent menu identifier where this link belongs.
    *
    */
-  public function menus(): belongsToMany
+  public function menus(): HasMany
   {
-    return $this->belongsToMany(\Neon\Models\MenuItems::class);
+    return $this->hasMany(\Neon\Models\MenuItem::class);
+      // ->wherePivot('dependence_type', 'LIKE', addslashes(self::class))
+      // ->using(\Neon\Models\MenuItem::class);
   }
-
-  /** The content where to this link points.
-   *
-   */
-  // public function content()
-  // {
-  //     return $this->morphOne(\Brightly\Mango\Models\Content::class, 'contentable');
-  // }
 
   /** The parent of the given menu item, for multi level navigation.
    *
@@ -173,6 +189,28 @@ class Link extends BasicModel
     }
 
     return $href;
+  }
+
+  public function getViewAttribute(): string
+  {
+    $result = '';
+
+    foreach ($this->content as $block)
+    {
+      $result .= View::first(\block_template($block), [
+        'key'         => $block->key(),
+        'attributes'  => $block->getAttributes()
+      ]);
+    }
+
+    return $result;
+  }
+
+  public function isActive($true_value = true, $false_value)
+  {
+    return (request()->segment(1) == Arr::first(Str::of($this->url)->explode('/'), function($value) {
+      return Str::of($value)->length > 0;
+    })) ? $true_value : $false_value;
   }
 
   // public function getOgDataAttribute(): array

@@ -2,19 +2,22 @@
 
 namespace Neon\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Neon\Models\Traits\Uuid;
+use Illuminate\Support\Str;
 use Neon\Models\Basic as BasicModel;
-use Neon\Site\Models\Traits\SiteDependencies;
+use Neon\Models\Statuses\BasicStatus;
+use Neon\Models\Traits\Statusable;
+use Neon\Models\Traits\Uuid;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
 class MenuItem extends BasicModel implements Sortable
 {
-  use SiteDependencies;
   use SoftDeletes;
   use SortableTrait;
+  use Statusable;
   use Uuid;
 
   const TARGET_SELF   = "_self";
@@ -26,7 +29,7 @@ class MenuItem extends BasicModel implements Sortable
    * @var array
    */
   protected $fillable = [
-    'title', 'order',
+    'title', 'order', 'url', 'target', 'menu_id', 'link_id', 'is_outside', 'status'
   ];
 
   /** The attributes that should be handled as date or datetime.
@@ -38,13 +41,14 @@ class MenuItem extends BasicModel implements Sortable
     'updated_at',
     'deleted_at',
   ];
-  
+
   /** The model's default values for attributes.
    *
    * @var array
    */
   protected $attributes = [
-    'target'    => self::TARGET_SELF,
+    'target'      => self::TARGET_SELF,
+    'is_outside'  => false
   ];
 
   /** Set up sorting.
@@ -52,8 +56,13 @@ class MenuItem extends BasicModel implements Sortable
    * @var array
    */
   public $sortable = [
-      'order_column_name'     => 'order',
-      'sort_when_creating'    => true,
+    'order_column_name'     => 'order',
+    'sort_when_creating'    => true,
+    'sort_on_has_many'      => true,
+  ];
+
+  protected $casts = [
+    'is_outside' => 'boolean',
   ];
 
   /** Extending the boot, to be able to set Observer this model, as because
@@ -70,15 +79,43 @@ class MenuItem extends BasicModel implements Sortable
     parent::boot();
   }
 
-  public function link(): HasOne
+  public function menu(): BelongsTo
   {
-    return $this->hasOne(\Neon\Models\Link::class);
+    return $this->belongsTo(\Neon\Models\Menu::class);
   }
-  
+
+  public function link(): BelongsTo
+  {
+    return $this->belongsTo(\Neon\Models\Link::class);
+  }
+
+  public function parent(): BelongsTo
+  {
+    return $this->belongsTo(\Neon\Models\MenuItem::class);
+  }
+
+  public function children(): HasMany
+  {
+    return $this->hasMany(\Neon\Models\MenuItem::class, 'parent_id');
+  }
+
   public function buildSortQuery()
   {
-      return static::query()
-          ->where('menu_id', $this->menu_id)
-          ->where('parent_id', $this->parent_id);
+    return static::query()
+      ->where('menu_id', $this->menu_id)
+      ->where('parent_id', $this->parent_id);
+  }
+
+  public function getHrefAttribute(): string
+  {
+    return $this->url ?: $this->link->url;
+  }
+
+  public function setUrlAttribute(string $value)
+  {
+    if (!Str::startsWith($value, "http"))
+    {
+      $this->attributes['url'] = Str::start($value, "/");
+    }
   }
 }
