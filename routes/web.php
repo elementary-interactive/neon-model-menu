@@ -5,7 +5,8 @@ use \Neon\Http\Controllers\LinkController;
 
 /** Default routing for Neon.
  * 
- * Using the Laravel's very nice fallback method to get page content from Neon.
+ * Using Laravel's very nice fallback method to get page content from Neon.
  * 
  */
-Route::fallback([LinkController::class, 'show']);
+Route::fallback([LinkController::class, 'show'])
+    ->middleware('web');
