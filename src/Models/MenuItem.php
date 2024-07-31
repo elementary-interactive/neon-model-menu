@@ -111,11 +111,11 @@ class MenuItem extends BasicModel implements Sortable
     return $this->url ?: $this->link->url;
   }
 
-  public function setUrlAttribute(string $value)
-  {
-    if (!Str::startsWith($value, "http"))
-    {
-      $this->attributes['url'] = Str::start($value, "/");
-    }
-  }
+	public function setUrlAttribute(string $value)
+	{
+		if (!$this->is_outside && !Str::startsWith($value, ["http", "https"]))
+		{
+			$this->attributes['url'] = Str::start($value, "/");
+		}
+	}
 }
