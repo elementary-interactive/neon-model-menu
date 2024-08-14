@@ -30,7 +30,7 @@ class Menu extends Component
    * @param  string  $id
    * 
    * @return void
-   */
+ */
   public function __construct(MenuService $service, string $id)
   {
     $this->service = $service;

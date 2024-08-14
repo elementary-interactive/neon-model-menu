@@ -37,7 +37,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->primary('id');
-            $table->index('status');
             $table->index('deleted_at');
             $table->foreign('link_id')->references('id')->on('links');
             $table->foreign('menu_id')->references('id')->on('menus');

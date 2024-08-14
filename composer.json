@@ -1,6 +1,6 @@
 {
   "name": "neon/menu",
-  "version": "3.0.0-alpha-14",
+  "version": "3.0.0-alpha-15",
   "description": "",
   "type": "library",
   "license": "MIT",
@@ -8,6 +8,10 @@
     {
       "name": "Balázs Ercsey",
       "email": "balazs.ercsey@elementary-interactive.com"
+    },
+    {
+      "name": "Attila Kovács",
+      "email": "attila.kovacs@elementary-interactive.com"
     }
   ],
   "autoload": {

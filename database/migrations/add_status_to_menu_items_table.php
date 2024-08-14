@@ -18,12 +18,14 @@ return new class extends Migration
             $table->char('status', 1)
                 ->default(BasicStatus::default()->value)
                 ->after('target');
+            $table->index('status');
         });
     }
 
     public function down()
     {
         Schema::table('menu_items', function (Blueprint $table) {
+            $table->dropIndex('status');
             $table->dropColumn('status');
         });
     }
