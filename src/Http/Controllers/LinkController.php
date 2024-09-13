@@ -19,6 +19,11 @@ class LinkController extends Controller
 
     public function show(LinkService $service, Request $request, string $slug = null)
     {
+        if ($slug == app('site')->current()->locale)
+        {
+            $slug = null;
+        }
+
         if (!$slug)
         {
             $page = $service->index();
