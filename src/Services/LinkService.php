@@ -79,7 +79,8 @@ class LinkService
     $link = config('neon.link.model', \Neon\Models\Link::class);
 
     $this->page = $link::whereHas('menus', function($query) use ($slug) {
-      $query->where('url', Str::start($slug, "/"));
+      $query->where('url', Str::start($slug, "/"))
+        ->orWhere('url', Str::start(app('site')->current()->locale, '/').Str::start($slug, "/"));
     })
       ->first();
 

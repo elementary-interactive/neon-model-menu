@@ -19,9 +19,9 @@ class LinkController extends Controller
 
     public function show(LinkService $service, Request $request, string $slug = null)
     {
-        if ($slug == app('site')->current()->locale)
+        if (strpos($slug, app('site')->current()->locale) == 0)
         {
-            $slug = null;
+            $slug = implode('/', array_slice(explode('/', $slug), 1));
         }
 
         if (!$slug)
