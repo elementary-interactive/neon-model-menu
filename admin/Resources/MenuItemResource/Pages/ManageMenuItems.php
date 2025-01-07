@@ -37,7 +37,7 @@ class ManageMenuItems extends ManageRecords
 
     foreach ($menus as $menu)
     {
-      $result[$menu->slug] = ListRecords\Tab::make($menu->title)
+      $result[$menu->id] = ListRecords\Tab::make($menu->title)
         ->badge(fn() => implode(', ', $menu->site->pluck('title')->toArray()))
         ->query(fn ($query) => $query->where('menu_id', $menu->id));
     }
@@ -55,7 +55,7 @@ class ManageMenuItems extends ManageRecords
     return Menu::withoutGlobalScopes()
     ->withoutTrashed()
     ->first()
-    ?->slug;
+    ?->id;
   }
 
 }
