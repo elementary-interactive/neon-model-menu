@@ -14,7 +14,7 @@ use Spatie\LaravelPackageTools\Package;
 
 class NeonMenuServiceProvider extends PackageServiceProvider
 {
-  const VERSION = '3.0.0-alpha-17';
+  const VERSION = '3.0.0-alpha-18';
 
   public function configurePackage(Package $package): void
   {
