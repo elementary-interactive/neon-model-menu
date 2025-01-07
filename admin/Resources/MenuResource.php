@@ -156,8 +156,7 @@ class MenuResource extends Resource
       ->actions([
         Tables\Actions\Action::make('redirect_to_menu_items')
           ->label(__('neon-admin::admin.resources.menu.actions.items'))
-          ->link()
-          ->url(fn (Menu $record): string => '/admin/menu-items?activeTab=' . $record->slug),
+          ->url(fn (Menu $record): string => '/admin/menu-items?activeTab=' . $record->id),
         Tables\Actions\EditAction::make()
           ->slideOver(),
         Tables\Actions\DeleteAction::make(),
